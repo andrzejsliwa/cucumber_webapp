@@ -30,4 +30,32 @@ end
 desc 'Alias for cucumber:ok'
 task :cucumber => 'cucumber:ok'
 
-task :default => :cucumber
+require "webrick"
+class NonCachingFileHandler < WEBrick::HTTPServlet::FileHandler
+  def prevent_caching(res)
+    res['ETag']          = nil
+    res['Last-Modified'] = Time.now + 100**4
+    res['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0'
+    res['Pragma']        = 'no-cache'
+    res['Expires']       = Time.now - 100**4
+  end
+
+  def do_GET(req, res)
+    super
+    prevent_caching(res)
+  end
+end
+
+desc "Run all specs"
+task :spec do
+  require 'webrick'
+
+  server = WEBrick::HTTPServer.new :Port => 3000
+  server.mount "/", NonCachingFileHandler , './public'
+  trap('INT') { server.stop }
+  require "launchy"
+  Launchy.open("http://localhost:3000/spec/spec.html")
+  server.start
+end
+
+task :default => [:cucumber, :spec]

@@ -16,12 +16,20 @@ module WithinHelpers
 end
 World(WithinHelpers)
 
-Given /^(?:|I )am on (.+)$/ do |page_name|
+Given /^(?:|I )am on ([^"]*)$/ do |page_name|
   visit path_to(page_name)
 end
 
-When /^(?:|I )go to (.+)$/ do |page_name|
+Given /^(?:|I )am on "([^"]*)"$/ do |page_name|
+  visit page_name
+end
+
+When /^(?:|I )go to ([^"]*)$/ do |page_name|
   visit path_to(page_name)
+end
+
+When /^(?:|I )go to "([^"]*)"$/ do |page_name|
+  visit page_name
 end
 
 When /^(?:|I )press "([^"]*)"(?: within "([^"]*)")?$/ do |button, selector|
@@ -216,4 +224,12 @@ end
 
 Then /^show me the page$/ do
   save_and_open_page
+end
+
+
+Then /^stay on the page$/ do
+  puts ""
+  puts "Browser is paused!"
+  puts "Press Enter to continue..."
+  STDIN.getc
 end
