@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type='text/javascript' src='jquery-1.4.3.min.js'></script>
+    <script type='text/javascript'>
+      $(function() {
+        $('#special-link').click(function(event) {
+          $('#results').html("This is totally awesome");
+          event.preventDefault();
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>My Webapp</h1>
+    <p>
+    <a href='#' id='special-link'>Click on this link to make cool stuff happen</a>
+    </p>
+    <div id="results"></div>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+install:
+  bunlde install
+  jruby -S gem install celerity
+
+run:
+  rake clean     # Remove all temp file.
+  rake features  # Run Cucumber features
